@@ -62,17 +62,32 @@
 	minVar = 'c'; 
 	console.log( typeof minVar ); 
     
-	var input = prompt('Ange ett tal');
+	var input;
+	var numOfGuesses = 7;
+	var numOfPerformedGuesses = 0; 
+	var guessedNumbers = new Array();
+	 
+	do {
+		input = +prompt('Ange ett tal');//Detta kastar inte ett undantag
 	
-	if(isNaN(input))
+		if(isNaN(input))
+		{
+			console.log(input + " Kan inte tolkas som ett tal");
+		}
+		else
+		{
+			guessedNumbers[numOfPerformedGuesses] = input; 
+			numOfPerformedGuesses++;
+		}
+	}while(isNaN(input) || guessedNumbers.length < numOfGuesses );
+	
+	var counter;
+	for(counter = 0; counter < guessedNumbers.length; counter++)
 	{
-		console.log(input);
+		console.log(guessedNumbers[counter]);
 	}
 	
-	console.log(+input);
 	
-	var a = +prompt("Ange tal: ");
-	console.log(a + 10);
 	var _name;
 	var _age;
 	
@@ -81,10 +96,11 @@
 		_name = name || "John Doe"; 
 		_age = age || "18"; 
 	}
+	console.log(_name); //undefined 
+	console.log(_age);//undefined
 	myFunc();
-	console.log(_name);
-	console.log(_age);
-	
+	console.log(_name); //John Doe
+	console.log(_age);//18
 	function loopFunc()
 	{
 		var counter; 
@@ -102,4 +118,5 @@
 			//Obs ordlingen kan inte garanteras
 		}
 	}
+	
 }());
