@@ -1,0 +1,10 @@
+.drag {
+    position:relative; 
+    background-color:lightgreen; 
+    cursor:move;
+    width:100px;
+}
+.in {
+    cursor:default;
+    background-color:lightblue; 
+}

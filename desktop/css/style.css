@@ -1,0 +1,21 @@
+div {
+    border:1px solid;
+}
+#menu {
+    position:fixed; 
+    bottom:0;
+    margin-left:auto; 
+    height:100px
+}
+
+.item {
+    width:100px; 
+    height:80px;
+    float: left;
+    transition: width 0.2s, height 0.2s;
+    -webkit-transition: width 0.2s, height 0.2s; /* Safari */
+}
+    .item:hover {
+        width:120px;
+        height:90px;
+    }
