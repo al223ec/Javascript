@@ -4,7 +4,7 @@ div {
 #menu {
     position:fixed; 
     bottom:0;
-    margin-left:auto; 
+    left:7%;
     height:100px
 }
 
@@ -19,3 +19,39 @@ div {
         width:120px;
         height:90px;
     }
+	
+.drag {
+    background-color:orangered;
+    border:1px solid #ececec;
+    position:absolute; 
+    cursor:move;
+    box-shadow: 2px 6px 5px #ececec;
+    padding-top:26px;
+    overflow:scroll;
+    overflow-x: hidden;
+    height:200px;
+    width: 200px;
+    resize: both;   /* Options: horizontal, vertical, both */
+}
+.close {
+    position:absolute;
+    background:red;
+    color:white;
+    top:0px;
+    right:0;
+}
+
+.minimizeTransition {
+    transition: width 0.2s, height 0.2s;
+    -webkit-transition: width 0.2s, height 0.2s; /* Safari */
+}
+.minimize {
+    width:0px; 
+    height:0px; 
+}
+.dragContent {
+    width:550px;
+    cursor:default;
+    height:400px; 
+    z-index:inherit;
+}

@@ -97,6 +97,7 @@ var Drag = function drag() {
         return n == null || isNaN(n) ? 0 : n;
     };
 }
+
 //http://javascript.info/tutorial/mouse-events#cross-browser-approach
 //document.getElementById('ball2').onmousedown = function () {
 //    this.style.position = 'absolute'
