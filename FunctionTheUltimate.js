@@ -41,7 +41,6 @@ function minimizeHeight(id) {
 
     function step() {
         dom.style.height = height + 'px';
-        console.log(height);
         if (height > 0) {
             height -= 1;
             setTimeout(step, 2);
@@ -76,5 +75,62 @@ minimizeHeight("content");
 minimizeWidth("content");
 
 
+
+
+//Sealer/Unsealer
+
+function make_sealer() {
+    var boxes = [], values = [];
+    return {
+        sealer: function (value) {
+            var i = boxes.length, box = {}; //Box är ett tomt objekt
+            boxes[i] = box;
+            values[i] = value;
+            return box;
+        },
+        unsealer: function (box) {
+            return values[boxes.indexOf(box)];
+        }
+    };
+}
+
+//Prototypal Inheritance
+console.log(Object);
+var gizmo = new_constructor(Object, function(id){ //Konstruktor
+    this.id = id; 
+}, {
+    toString: function(){
+        return "gizmo " + this.id; 
+    }
+});
+
+//var hoozit = new_constructor(gizmo, function (id) {//Konstruktor // hoozit ärver alltså gizmo 
+//    this.id = id;
+//}, {
+//    test: function (id) { //Ytterligare funktioner man vill lägga till till detta objekt
+//        return this.id === id;
+//    }
+//});
+
+function new_constructor(extend, initializer, methods) { //initializer == konstruktor
+    var func, prototype = Object.create(extend && extend.prototype);
+
+    if (methods) {
+        methods.keys().forEach(function (key) {
+            prototype[key] = methods[key]; 
+        });
+    }
+
+    func = function () {
+        var that = Object.create(prototype);
+        if (typeof initializer === 'function') {
+            initializer.apply(that, arguments); 
+        }
+        return that; 
+    };
+    func.prototype = prototype;
+    prototype.constructor = func;
+    return func;
+}
 
 
