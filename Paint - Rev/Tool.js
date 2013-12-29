@@ -132,7 +132,7 @@ function Tool(canvas, context) {
     };
 
     this.stopDraw = function () {
-        canvasUpdate(); //Färdig med ritandet, kopiera det vi ritat i Tempcanvas till canvas, behöver endast göras när det ritas rekt
+        canvasUpdate(); //Färdig med ritandet, kopiera det vi ritat i Tempcanvas till canvas
         isPainting = false;
     };
 }
@@ -173,20 +173,53 @@ function ColorSwatch(colorpicker, color) {
 };
 
 var SelectTool = {
-    initTools: function (p) {
-        var label;
-        var text;
-        var option
-//<p><label>Tool: <select id="tools">
+    p: document.createElement("p"),
+
+    init : function(){
+        initTools(); 
+        initSize(); 
+        return p; 
+    },
+    initTools: function () {
+        var label = document.createElement("label");
+        var select = document.createElement("select");
+        select.class = "tools";
+        var text = document.createTextNode("Tool: ");
+        label.appendChild(text);
+
+        p.appendChild(label); 
+        var values = ['rect','pencil','line','circle']; 
+        var text = ['Rektangel', 'Penna', 'Linje', 'Cirkel'];
+
+        for (var i = 0; i < values.length; i++) {
+            var option = document.createElement("option");
+            option.value = values[i];
+            option.appendChild(document.createTextNode(text[i])); 
+            select.appendChild(option);
+        }
+        label.appendChild(select);
+        p.appendChild(label); 
+        //<p><label>Tool: <select id="tools">
 //<option value="rect">Rectangle</option>
 //<option value="pencil">Pencil</option>
 //<option value="line">Line</option>
 //<option value="circle">Circle</option>
 //</select></label>
-//<label>Stroke size <input type="number" min="1" max="10" id="size" />
-//</label></p>
-    },
-    initSize: function (p) {
 
+    },
+    initSize: function () {
+        var label = document.createElement("label");
+        var text = document.createTextNode("Stroke size: "); 
+        var input = document.createElement("input");
+        input.type = 'number'; 
+        input.min = 1; 
+        input.max = 10; 
+        input.className = "size"; 
+
+        label.appendChild(text); 
+        label.appendChild(input); 
+        p.appendChild(label);
+        //<label>Stroke size <input type="number" min="1" max="10" id="size" />
+        //</label></p>
     }
 };

@@ -1,37 +1,26 @@
-var timeout = 500;
-var closetimer = 0;
-var ddmenuitem = 0;
+"use strict";
+function DropDown() {
+    var dropDownLinks = document.querySelectorAll(".dropDownLink");
+    var dropDownMenus = document.querySelectorAll(".dropDownMenu");;
 
-// open hidden layer
-function mopen(id) {
-    // cancel close timer
-    mcancelclosetime();
+    var that = this; 
+    this.init = function () {
+        for (var i = 0; i < dropDownLinks.length; i++) {
+            dropDownLinks[i].onclick = that.displayMenu; 
+        }
+    };
 
-    // close old layer
-    if (ddmenuitem) ddmenuitem.style.visibility = 'hidden';
-
-    // get new layer and show it
-    ddmenuitem = document.getElementById(id);
-    ddmenuitem.style.visibility = 'visible';
-
-}
-// close showed layer
-function mclose() {
-    if (ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+    this.displayMenu = function(e) {
+        console.log(e);
+        console.log(e.target.nextElementSibling);
+        e.target.nextElementSibling.className = "visible"; 
+    };
 }
 
-// go close timer
-function mclosetime() {
-    closetimer = window.setTimeout(mclose, timeout);
-}
-
-// cancel close timer
-function mcancelclosetime() {
-    if (closetimer) {
-        window.clearTimeout(closetimer);
-        closetimer = null;
-    }
-}
-
-// close layer when click-out
-document.onclick = mclose;
+var createDropDownMenu = {
+    //Skapa menyn 
+}; 
+window.onload = function () {
+    var dropdown = new DropDown();
+    dropdown.init();
+};

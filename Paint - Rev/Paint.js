@@ -15,9 +15,6 @@ function Paint(canvas) {
             throw Error("canvas verkar inte stödjas, eller så är inte objektet av typen canvas");
         }
         var context = canvas.getContext('2d');
-        
-        console.log(context);
-        
         tool = new Tool(canvas, context);
 
         tempCanvas = tool.init();
@@ -60,3 +57,10 @@ function Paint(canvas) {
         tool.stopDraw();
     };
 }
+
+Paint.prototype.createCanvas = function () {
+    var canvas = document.createElement("canvas");
+    canvas.className = 'contentCanvas';
+    canvas.style.width = '400px';
+    canvas.style.height = '300px';
+};
