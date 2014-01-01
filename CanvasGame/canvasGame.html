@@ -11,21 +11,31 @@
     position: absolute; 
     top: 1px; 
     left: 1px; 
-
 }
-.paint .container { 
-    position: relative; 
-    width:400px;
+.paint {
+} 
+.container {
+    width:75%;
 }
+    .info {
+        width:20%;
+    }
 </style>
 </head>
 <body>
 <div class="paint">
     <div class="container">
-      <canvas class="contentCanvas" width="400" height="300">
+      <canvas class="contentCanvas" width="800" height="800">
       </canvas>
+        <div class="info">
+            information
+        </div>
     </div>
 </div>
     <script type="text/javascript" src="Game.js"></script> 
-  </body>
+    <script type="text/javascript" src="GameObject.js"></script>
+    <script type="text/javascript" src="GameState.js"></script>
+    <script type="text/javascript" src="TileMap.js"></script>
+
+</body>
 </html>

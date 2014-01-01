@@ -4,7 +4,7 @@ window.onload = function () {
     game.startGame();
 };
 
-function Game() {
+function Game(canvas) {
     var animFrame = window.requestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
         window.mozRequestAnimationFrame ||
@@ -19,10 +19,13 @@ function Game() {
     }
 
     var context = canvas.getContext('2d'); 
-    var x = 150; 
-    var y = 150; 
-    var dx = 2; 
-    var dy = 4;
+
+    context.scale(2, 2);
+
+    var startTime = new Date().getTime();
+    var fps = 0;
+
+    var gsm = new GameState(canvas, null); 
 
     this.startGame = function () {
         if (animFrame !== null) {
@@ -32,7 +35,8 @@ function Game() {
             };
             // start the mainloop
             animFrame(recursiveAnim);
-        } else { //Browser support
+        }
+        else { //Browser support
             var ONE_FRAME_TIME = 1000.0 / 60.0;
             setInterval(mainloop, ONE_FRAME_TIME);
         }
@@ -41,27 +45,37 @@ function Game() {
     function mainloop() {
         updateGame();
         drawGame();
+        fpsCounter();
    };
 
    function updateGame() {
        //Updatera spelet här
-       x += dx;
-
-       if (y + dy > canvas.height) {
-           y = canvas.height
-       } else {
-           y += dy;
-       }
+       gsm.update();
    };
 
    function drawGame() {
        //Rita spelet här
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.beginPath();
-        context.arc(x, y, 10, 0, Math.PI * 2, true);
-        context.closePath();
-        context.fill();
-    };
+       context.clearRect(0, 0, canvas.width, canvas.height);
+
+       //function canvasUpdate() {
+       //    context.drawImage(tempCanvas, 0, 0);
+       //    tempContext.clearRect(0, 0, canvas.width, canvas.height);
+       //};
+
+       gsm.draw(context);
+   };
+
+    //Räknar endast FPS och skriver ut dessa
+   function fpsCounter() {
+       var currentTime = new Date().getTime(); 
+       if ((currentTime - startTime) > 1000) {
+           document.querySelector(".info").innerHTML = "fps: "+  fps; 
+           fps = 0;
+           startTime = currentTime;
+       } else {
+           fps++;
+       }
+   };
 };
 
 
