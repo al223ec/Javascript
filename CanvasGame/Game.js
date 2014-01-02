@@ -20,7 +20,7 @@ function Game(canvas) {
 
     var context = canvas.getContext('2d'); 
 
-    context.scale(2, 2);
+    //context.scale(1.5, 1.5);
 
     var startTime = new Date().getTime();
     var fps = 0;
