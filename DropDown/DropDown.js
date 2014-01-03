@@ -13,7 +13,10 @@ function DropDown() {
     this.displayMenu = function(e) {
         console.log(e);
         console.log(e.target.nextElementSibling);
-        e.target.nextElementSibling.className = "visible"; 
+        e.target.nextElementSibling.className = "visible";
+        e.target.onmouseout = function () {
+            console.log(this);
+        };
     };
 }
 
