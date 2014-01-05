@@ -13,8 +13,13 @@ var PWD = {//statiska objektet som startar applikationen
 
         //Ska jag hantera dessa från scripten?
         var imageGallery = document.querySelector(".appImage");
+
+        var newGallery = new ImageGallery();
+        newGallery.loadFile();
         imageGallery.onclick = function () {
-            WindowHandler.add(that.main, new ImageGallery());
+            var newGallery = new ImageGallery();
+            WindowHandler.add(that.main, newGallery);
+            newGallery.loadFile();
         };
 
         var memory = document.querySelector(".appMemory");
@@ -33,7 +38,6 @@ var PWD = {//statiska objektet som startar applikationen
 //};
 
 //Kan ju använda toString
-
 //window.oncontextmenu = function (e) { //Högerklick 
 //    console.log(e);
 //    console.log(e.target);
