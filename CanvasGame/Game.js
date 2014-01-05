@@ -12,6 +12,9 @@ function Game(canvas) {
         window.msRequestAnimationFrame ||
         null;
 
+    if (!animFrame) {
+        throw Error("Observerar att animationFrame stöds inte"); 
+    }
     if (!canvas) {
         canvas = document.querySelector("canvas");
     } else if (!canvas || !canvas.getContext) {
