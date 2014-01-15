@@ -3,7 +3,8 @@ Game.GameState = function(canvas, tileMap) {
     var currentState = 0;
     var states = []; //Kommer hålla de olika levlarna
     var tileMap = new TileMap();
-    var playa = new Game.GameObject(canvas, tileMap);
+    var playa = new Game.GameObject.Player(canvas, tileMap);
+    var enemy = new Game.GameObject.Enemy(canvas, tileMap, playa);
 
     window.addEventListener("keydown", keyDown, false);
     window.addEventListener("keyup", keyUp, false);
@@ -47,10 +48,12 @@ Game.GameState = function(canvas, tileMap) {
 
     this.draw = function (context) {
         playa.draw(context);
+        enemy.draw(context);
         tileMap.draw(context);
     };
 
     this.update = function () {
+        enemy.update();
         playa.update();
     };
 }; 
