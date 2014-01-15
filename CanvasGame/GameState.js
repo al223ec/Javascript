@@ -1,9 +1,9 @@
 "use strict";
-function GameState(canvas, tileMap) {
+Game.GameState = function(canvas, tileMap) {
     var currentState = 0;
     var states = []; //Kommer hålla de olika levlarna
     var tileMap = new TileMap();
-    var playa = new Player(canvas, tileMap);
+    var playa = new Game.GameObject(canvas, tileMap);
 
     window.addEventListener("keydown", keyDown, false);
     window.addEventListener("keyup", keyUp, false);
@@ -47,7 +47,6 @@ function GameState(canvas, tileMap) {
 
     this.draw = function (context) {
         playa.draw(context);
-
         tileMap.draw(context);
     };
 

@@ -72,7 +72,6 @@ var i2 = new ItemType();// id == 1; i.type == generic
 var si = new SubItemType();// id == 3; i.type == sub
 
 
-
 //Closures
 //In cumputer science, a closure is a function thta is evaluated in an enviroment containing one or more bound variables. When called, the function can access these variables.
 //Closures: Where a function remebers what happens around it.
@@ -115,6 +114,7 @@ for (var i = 0; i < 5; i++) {
     //a.onclick = function () {
     //   console.log(i); //5 alla gånger
     //};
+
     b.appendChild(a);
 }
 function onClick(i) {
@@ -140,11 +140,11 @@ function helpFunc () {
 
     function priv(arg) {
         return "private function " + arg;
-    }
+    };
     function increase() {
         variabel += 1;
-        return variabel; 
-    }
+        return variabel;
+    };
     return {
         priv: priv,
         increase: increase,
@@ -154,3 +154,29 @@ var help = helpFunc();
 var help2 = helpFunc();
 console.log(help.increase()); //1
 console.log(help2.increase()); // 1
+
+//Event capturing
+//When you use event capturing
+//               | |
+//---------------| |-----------------
+//| element1     | |                |
+//|   -----------| |-----------     |
+//|   |element2  \ /          |     |
+//|   -------------------------     |
+//|        Event CAPTURING          |
+//-----------------------------------
+//the event handler of element1 fires first, the event handler of element2 fires last.
+
+//Event bubbling
+//When you use event bubbling
+//               / \
+//---------------| |-----------------
+//| element1     | |                |
+//|   -----------| |-----------     |
+//|   |element2  | |          |     |
+//|   -------------------------     |
+//|        Event BUBBLING           |
+//-----------------------------------
+//the event handler of element2 fires first, the event handler of element1 fires last.
+
+

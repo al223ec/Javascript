@@ -60,12 +60,6 @@ function Game(canvas) {
    function drawGame() {
        //Rita spelet här
        context.clearRect(0, 0, canvas.width, canvas.height);
-
-       //function canvasUpdate() {
-       //    context.drawImage(tempCanvas, 0, 0);
-       //    tempContext.clearRect(0, 0, canvas.width, canvas.height);
-       //};
-
        gsm.draw(context);
    };
 
@@ -82,40 +76,4 @@ function Game(canvas) {
    };
 };
 
-
-
-
-//this.draw = function () {
-//    context.clearRect(0, 0, 300, 300);
-//    context.beginPath();
-//    context.arc(x, y, 10, 0, Math.PI * 2, true);
-//    context.closePath();
-//    context.fill();
-//    x += dx;
-//    y += dy;
-
-//    //Game.context.beginPath();
-//    //Game.context.arc(75, 75, 10, 0, Math.PI * 2);
-//    //Game.context.closePath();
-//    //Game.context.fill();
-
-//    //Game.context.fillStyle = "#00A308";
-//    //Game.context.beginPath();
-//    //Game.context.arc(220, 220, 50, 0, Math.PI * 2, true);
-//    //Game.context.closePath();
-//    //Game.context.fill();
-
-//    //Game.context.fillStyle = "#FF1C0A";
-//    //Game.context.beginPath();
-//    //Game.context.arc(100, 100, 100, 0, Math.PI * 2, true);
-//    //Game.context.closePath();
-//    //Game.context.fill();
-
-//    ////the rectangle is half transparent
-//    //Game.context.fillStyle = "rgba(255, 255, 0, .5)"
-//    //Game.context.beginPath();
-//    //Game.context.rect(15, 150, 120, 120);
-//    //Game.context.closePath();
-//    //Game.context.fill();
-//}
 
