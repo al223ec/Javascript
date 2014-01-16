@@ -14,17 +14,23 @@ Game.GameObject = function (canvas, TM) {
 
     var moving = false;
 
-    var topLeft = false;
-    var topRight = false;
-    var bottomLeft = false;
-    var bottomRight = false;
+    this.topLeft = false;
+    this.topRight = false;
+    this.bottomLeft = false;
+    this.bottomRight = false;
 
-    this.animation = null; 
+    this.animation = null;
+    var that = this;
 
     //Getters
     this.getX = function () { return x; }
     this.getY = function () { return y; }
     this.getRadius = function () { return radius; }
+
+    this.getTileSize = function () { return tileSize; }
+    this.getTiles = function () { return tiles; }
+    this.getDx = function () { return dx; }
+    this.getDy = function () { return dy; }
 
     //setters
     this.setRadius = function (value) { radius = value; };
@@ -55,18 +61,18 @@ Game.GameObject = function (canvas, TM) {
         tempX = x;
         tempY = y;
 
-        calculateCorners(xdest, y); //Ber�knar f�r x
-        if (dx < 0)//g�r �t v�nster
+        calculateCorners(xdest, y); //Beräknar för x
+        if (dx < 0)//går åt vänster
         {
-            if (topLeft || bottomLeft) {
+            if (that.topLeft || that.bottomLeft) {
                 dx = 0;
                 tempX = currCol * tileSize + radius; //Ifall det �r n�got i v�gen s�tt x v�rdet till det som �r i v�gen + h�lften av objektets egen bredd
             }
             else {
                 tempX += dx;
             }
-        } else if (dx > 0) { //G�r �t h�ger
-            if (topRight || bottomRight) {
+        } else if (dx > 0) { //Går �t höger
+            if (that.topRight || that.bottomRight) {
                 dx = 0;
                 tempX = (currCol + 1) * tileSize - radius;
             }
@@ -77,15 +83,15 @@ Game.GameObject = function (canvas, TM) {
         calculateCorners(x, ydest); //Ber�knar f�r y
         if (dy < 0)//g�r upp�t
         {
-            if (topLeft || topRight) {
+            if (that.topLeft || that.topRight) {
                 dy = 0;
                 tempY = currRow * tileSize + radius;
             }
             else {
                 tempY += dy;
             }
-        } else if (dy > 0) { //G�r �t h�ger
-            if (bottomLeft || bottomRight) {
+        } else if (dy > 0) { //Går nedåt
+            if (that.bottomLeft || that.bottomRight) {
                 dy = 0;
                 tempY = (currRow + 1) * tileSize - radius;
             }
@@ -105,10 +111,10 @@ Game.GameObject = function (canvas, TM) {
         var bottomTile = Math.floor((y + radius - 1) / tileSize);
 
         //S�tter de booleanska v�rderna
-        topLeft = tiles[topTile][leftTile] !== 0;
-        topRight = tiles[topTile][rightTile] !== 0;
-        bottomLeft = tiles[bottomTile][leftTile] !== 0;
-        bottomRight = tiles[bottomTile][rightTile] !== 0;
+        that.topLeft = tiles[topTile][leftTile] !== 0;
+        that.topRight = tiles[topTile][rightTile] !== 0;
+        that.bottomLeft = tiles[bottomTile][leftTile] !== 0;
+        that.bottomRight = tiles[bottomTile][rightTile] !== 0;
     };
     this.checkCollision = function (obj) {
         if (!(obj && obj.getX)) {
@@ -119,8 +125,9 @@ Game.GameObject = function (canvas, TM) {
             obj.hit();
             return true; 
         }
-    }; 
+    };
 };
+
 Game.GameObject.Item = function () {
 }; 
 
@@ -162,7 +169,30 @@ Game.GameObject.Enemy = function (canvas, TM, player) {
     img.src = 'tiles/player.png';
 
     //Bör implementera olika status för fienden jaganda/ idle
-    var isHunting = true; 
+    var isHunting = true;
+    var isIdle = false;
+    var states = {
+        hunting: function (that) {
+            if (player.getX() < that.getX()) {
+                that.setDirectionX(-2);
+            } else if (player.getX() > that.getX()) {
+                that.setDirectionX(2);
+            } else {
+                that.setDirectionX(0);
+            }
+            if (player.getY() < that.getY()) {
+                that.setDirectionY(-2);
+            } else if (player.getY() > that.getY()) {
+                that.setDirectionY(2);
+            } else {
+                that.setDirectionY(0);
+            }
+        },
+        idle: function(that){
+        },
+    }; 
+    var canSeePlayer = true;
+    var moveRight = false, moveLeft = false, moveUp = false, moveDown = false; 
 
     this.draw = function (context) {
         context.drawImage(img, this.getX() - this.getRadius(), this.getY() - this.getRadius(), 20, 20);
@@ -172,28 +202,125 @@ Game.GameObject.Enemy = function (canvas, TM, player) {
         this.checkTileMapCollision();
 
         if (isHunting) {
-            if (player.getX() < this.getX()) {
-                this.setDirectionX(-2);
-            } else if (player.getX() > this.getX()) {
-                this.setDirectionX(2);
-            } else {
-                this.setDirectionX(0);
-            }
+            states.hunting(this);
 
-            if (player.getY() < this.getY()) {
-                this.setDirectionY(-2);
-            } else if (player.getY() > this.getY()) {
-                this.setDirectionY(2);
+        } else if (isIdle) {
+            this.setDirectionX(0);
+            this.setDirectionY(0);
+
+            //if (!moveRight && !(this.topLeft && this.bottomLeft)) {
+            //    console.log("åt vänster");
+            //    moveLeft = true;
+            //} else if (!moveRight && this.topLeft || this.bottomLeft) {
+            //    console.log("kan inte röra sig åt vänster");
+            //    moveLeft = false; 
+            //}
+
+            //if (!moveLeft && !this.topRight && this.bottomRight) {
+            //    moveRight = true;
+            //} else if (this.topRight || this.bottomRight) {
+            //    console.log("kan inte röra sig åt höger");
+            //    moveRight = false;
+            //}
+            
+            //if (!moveDown && !this.topLeft && this.topRight) {
+            //    moveUp = true;
+            //} else if (this.topLeft || this.topRight) {
+            //    moveUp = false;
+            //}
+
+            //if (!moveUp && !this.bottomLeft && this.bottomRight) {
+            //    moveDown = true;
+            //} else if (this.bottomLeft || this.bottomRight) {
+            //    moveDown = false;
+            //}
+
+            //if (moveRight) {
+            //    this.setDirectionX(2);
+            //}
+            //if (moveLeft) {
+            //    this.setDirectionX(-2);
+            //}
+            //if (moveUp) {
+            //    this.setDirectionY(-2);
+            //}
+            //if (moveDown) {
+            //    this.setDirectionY(2);
+            //}
+
+        }
+
+        this.checkWherePlayerIs(); 
+        this.checkCollision(player);
+        changeState(); 
+    };
+    function changeState() {
+        setTimeout(function () {
+            if (canSeePlayer) {
+                isHunting = true;
+                isIdle = false;
             } else {
-                this.setDirectionY(0);
+                isIdle = true;
+                isHunting = false;
+            }
+        }, 1000);
+    }; 
+
+    this.checkWherePlayerIs = function () {
+
+        var pCurrCol = Math.floor(player.getX() / this.getTileSize());
+        var pCurrRow = Math.floor(player.getY() / this.getTileSize());
+
+        var eCurrCol = Math.floor(this.getX() / this.getTileSize());
+        var eCurrRow = Math.floor(this.getY() / this.getTileSize());
+
+        var distansCol = pCurrCol - eCurrCol;
+        var distansRow = pCurrRow - eCurrRow; //kan kolla varje row som skiljer samtidigt
+        var canSeeRight = true, canSeeLeft = true, canSeeUp = true, canSeeDown = true; 
+
+        if (pCurrCol > eCurrCol) {
+            for (var i = 0; i < distansCol; i++) {
+                canSeeRight = this.getTiles()[eCurrRow][eCurrCol + i] === 0;
+                if (!canSeeRight) {
+                    break; 
+                }
+            }
+        } 
+        distansCol = eCurrCol - pCurrCol;
+        if (pCurrCol < eCurrCol) {
+            for (var i = 0; i < distansCol; i++) {
+                canSeeLeft = this.getTiles()[eCurrRow][eCurrCol - i] === 0;
+                if (!canSeeLeft) {
+                    break;
+                }
+            }
+        } 
+        distansCol = pCurrRow - eCurrRow
+        if (pCurrRow > eCurrRow) {
+            for (var i = 0; i < distansCol; i++) {
+                canSeeUp = this.getTiles()[eCurrRow + i][eCurrCol] === 0;
+                if (!canSeeUp) {
+                    break;
+                }
             }
         }
-        this.checkCollision(player);
+        distansCol = eCurrRow - pCurrRow;
+        if (pCurrRow < eCurrRow) {
+            for (var i = 0; i < distansCol; i++) {
+                canSeeDown = this.getTiles()[eCurrRow - i][eCurrCol] === 0;
+                if (!canSeeDown) {
+                    break;
+                }
+            }
+        }
+        canSeePlayer = canSeeRight && canSeeLeft && canSeeUp && canSeeDown;
+
+        console.log(canSeePlayer);//
+       //Måste kolla en tile ovanför s
     };
 };
 
 Game.GameObject.Enemy.prototype = Game.GameObject.prototype;
-
 Game.GameObject.Animation = function(image, time) {
     this.getImage = function () {
         return image;
